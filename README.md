@@ -12,13 +12,13 @@
 如需修改安装和修改的软件包，请修改 `config` 下的版本文件，用法：    
 ```
 # 添加的软件包
-PACKAGES:htop kmod-nft-tproxy
+PACKAGES=htop kmod-nft-tproxy
 
 # 移除的软件包
-PACKAGES:-ppp -pppoe
+PACKAGES=-ppp -pppoe
 
 # 构建目标
-PROFILE:xiaomi_mi-router-CR6608
+PROFILE=xiaomi_mi-router-CR6608
 ```
 
 如须修改或添加已有的版本，请更改 `.github/workflows/build.yaml` 的 `matrix`.    
