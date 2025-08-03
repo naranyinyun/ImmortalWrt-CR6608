@@ -1,4 +1,4 @@
-# 自动为 CR6608 构建 ImmortalWrt
+# CR6608 ImmortalWrt 自动构建
 自动拉取最新 ImmoralWrt ImageBuilder 并构建镜像，每日 0：00 执行。    
 构建目标，添加和移除的软件包在 `config` 下，通过 `Matrix` 自动构建多版本镜像，资产从 `Action` 获取。    
 
