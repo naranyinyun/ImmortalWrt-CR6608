@@ -28,10 +28,10 @@ jobs:
                 wget https://downloads.immortalwrt.org/snapshots/targets/ramips/mt7621/immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64.tar.zst
                 tar --zstd -xvf immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64.tar.zst                
 
-            - name: Parse configuration
+            - name: parse configuration
               id: config  
               run: |
-                    CONFIG=configs/${{ matrix.target }}.config
+                    CONFIG=config/${{ matrix.target }}.config
                     PROFILE=$(grep '^PROFILE=' "$CONFIG" | cut -d= -f2-)
                     PACKAGES=$(grep '^PACKAGES=' "$CONFIG" | cut -d= -f2-)
                     echo "profile=$PROFILE" >> $GITHUB_OUTPUT
