@@ -25,7 +25,7 @@ jobs:
             - name: Parse configuration
                     id: config
                     run: |
-                      CONFIG=configs/${{ matrix.target }}.txt
+                      CONFIG=configs/${{ matrix.target }}.config
                       PROFILE=$(grep '^PROFILE=' "$CONFIG" | cut -d= -f2-)
                       PACKAGES=$(grep '^PACKAGES=' "$CONFIG" | cut -d= -f2-)
                       echo "profile=$PROFILE" >> $GITHUB_OUTPUT
