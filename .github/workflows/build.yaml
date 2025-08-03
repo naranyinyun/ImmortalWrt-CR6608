@@ -9,6 +9,12 @@ on:
 jobs:
     build:
         runs-on: ubuntu-22.04
+        strategy:
+          matrix:
+            target:
+              - cr6608-full
+              - cr6608-mini
+
 
         steps:
             - name: checkout repo
@@ -23,13 +29,13 @@ jobs:
                 tar --zstd -xvf immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64.tar.zst                
 
             - name: Parse configuration
-                    id: config
-                    run: |
-                      CONFIG=configs/${{ matrix.target }}.config
-                      PROFILE=$(grep '^PROFILE=' "$CONFIG" | cut -d= -f2-)
-                      PACKAGES=$(grep '^PACKAGES=' "$CONFIG" | cut -d= -f2-)
-                      echo "profile=$PROFILE" >> $GITHUB_OUTPUT
-                      echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
+              id: config  
+              run: |
+                    CONFIG=configs/${{ matrix.target }}.config
+                    PROFILE=$(grep '^PROFILE=' "$CONFIG" | cut -d= -f2-)
+                    PACKAGES=$(grep '^PACKAGES=' "$CONFIG" | cut -d= -f2-)
+                    echo "profile=$PROFILE" >> $GITHUB_OUTPUT
+                    echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
 
             - name: build image
               working-directory: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64
