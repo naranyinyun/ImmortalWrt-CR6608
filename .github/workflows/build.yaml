@@ -2,12 +2,13 @@ name: Build ImmortalWrt
 
 on:
     schedule:
-        - corn '0 0 * * *'
-        workflow_dispatch:
+        - cron: '0 0 * * *'
+    workflow_dispatch:
+        
 
 jobs:
     build:
-        run-on: ubuntu-latest
+        runs-on: ubuntu-latest
 
         steps:
             - name: set up build toolchain
