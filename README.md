@@ -16,7 +16,7 @@ PACKAGES:htop kmod-nft-tproxy
 PACKAGES:-ppp -pppoe
 
 # 构建目标
-PROFILE: xiaomi_mi-router-CR6608
+PROFILE:xiaomi_mi-router-CR6608
 ```
 
 如须修改或添加已有的版本，请更改 `.github/workflows/build.yaml` 的 `matrix`.
