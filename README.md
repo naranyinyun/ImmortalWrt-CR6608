@@ -23,3 +23,8 @@ PROFILE=xiaomi_mi-router-CR6608
 
 如须修改或添加已有的版本，请更改 `.github/workflows/build.yaml` 的 `matrix`.    
 如需修改构建目标，请填写正确的 `PROFILE`，可以拉取 `ImageBuilder` 并执行 `make info` 获得。    
+
+# 故障排查
+1. `ImageBuilder` 下载链接目前被硬编码在 `build.yaml` 中, 如遇下载问题, 尝试修正下载链接.     
+2.  默认使用 `Cache` 缓存下载的资产和构建中间产物用于加速构建, 如遇构建问题, 可以尝试删除所有 `Cache` 重试.
+3.  `Matrix` 目标必须与 `config` 下配置文件名一致. 配置文件格式必须遵循上述格式, 或者修改 `build.yaml` 中的裁剪规则使其工作.
