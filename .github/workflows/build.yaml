@@ -15,25 +15,26 @@ jobs:
           - cr6608-mini
 
     steps:
-      - name: checkout repo
+      - name: Checkout repo
         uses: actions/checkout@v4
 
-      - name: set up build toolchain
+      - name: Set up build toolchain
         run: |
           sudo apt update
-          sudo apt install build-essential file libncurses-dev zlib1g-dev gawk git \
-            gettext libssl-dev xsltproc rsync wget unzip python3 python3-distutils    
+          sudo apt install -y build-essential file libncurses-dev zlib1g-dev gawk git \
+            gettext libssl-dev xsltproc rsync wget unzip python3 python3-distutils
           wget --quiet https://downloads.immortalwrt.org/snapshots/targets/ramips/mt7621/immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64.tar.zst
           tar --zstd -xvf immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64.tar.zst
 
-      - name: parse configuration
-        id: config  
+      - name: Parse configuration
+        id: config
         run: |
           CONFIG=config/${{ matrix.target }}.config
+          if [ ! -f "$CONFIG" ]; then echo "No vaild data in config, check it."; exit 1; fi
           PROFILE=$(grep '^PROFILE=' "$CONFIG" | cut -d= -f2-)
           PACKAGES=$(grep '^PACKAGES=' "$CONFIG" | cut -d= -f2-)
-          echo "profile=$PROFILE" >> $GITHUB_OUTPUT
-          echo "packages=$PACKAGES" >> $GITHUB_OUTPUT
+          echo "profile=$PROFILE" >> "$GITHUB_OUTPUT"
+          echo "packages=$PACKAGES" >> "$GITHUB_OUTPUT"
 
       - name: Cache dl/
         uses: actions/cache@v4
@@ -53,14 +54,21 @@ jobs:
           path: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/staging_dir
           key: staging-${{ steps.config.outputs.profile }}-${{ matrix.target }}
 
-      - name: build image
+      - name: Build image
         working-directory: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64
         run: |
-          make image PROFILE=${{ steps.config.outputs.profile }} PACKAGES="${{ steps.config.outputs.packages }}"
+          make image PROFILE="${{ steps.config.outputs.profile }}" PACKAGES="${{ steps.config.outputs.packages }}" | tee build.log
 
-      - name: upload artifact
+      - name: Upload firmware artifact
         uses: actions/upload-artifact@v4
         with:
           name: ${{ matrix.target }}-firmware-${{ github.run_id }}
           path: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/bin/targets/ramips/mt7621/
+          retention-days: 3
+
+      - name: Upload build log (optional)
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.target }}-log-${{ github.run_id }}
+          path: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/build.log
           retention-days: 3
