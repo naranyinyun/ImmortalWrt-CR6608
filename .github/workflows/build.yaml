@@ -40,19 +40,19 @@ jobs:
         uses: actions/cache@v4
         with:
           path: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/dl
-          key: dl-${{ steps.config.outputs.profile }}
+          key: dl-${{ steps.config.outputs.profile }}-${{ hashFiles('immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/*') }}
 
       - name: Cache build_dir/
         uses: actions/cache@v4
         with:
           path: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/build_dir
-          key: build-${{ steps.config.outputs.profile }}-${{ matrix.target }}
+          key: build-${{ steps.config.outputs.profile }}-${{ matrix.target }}-${{ hashFiles('immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/*') }}
 
       - name: Cache staging_dir/
         uses: actions/cache@v4
         with:
           path: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/staging_dir
-          key: staging-${{ steps.config.outputs.profile }}-${{ matrix.target }}
+          key: staging-${{ steps.config.outputs.profile }}-${{ matrix.target }}-${{ hashFiles('immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64/*') }}
 
       - name: Build image
         working-directory: immortalwrt-imagebuilder-ramips-mt7621.Linux-x86_64
